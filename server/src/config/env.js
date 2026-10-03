@@ -11,6 +11,9 @@ const schema = Joi.object({
     .required(),
   CLIENT_URL: Joi.string().required(),
   LOG_LEVEL: Joi.string().valid('error', 'warn', 'info', 'http', 'debug').default('info'),
+  BCRYPT_SALT_ROUNDS: Joi.number().integer().min(10).max(15).default(12),
+  SEED_ADMIN_EMAIL: Joi.string().email(),
+  SEED_ADMIN_PASSWORD: Joi.string().min(8),
 }).unknown(true);
 
 const { error, value } = schema.validate(process.env, { abortEarly: false });
@@ -29,4 +32,7 @@ export const env = Object.freeze({
   LOG_LEVEL: value.LOG_LEVEL,
   isProduction: value.NODE_ENV === 'production',
   isTest: value.NODE_ENV === 'test',
+  BCRYPT_SALT_ROUNDS: value.BCRYPT_SALT_ROUNDS,
+  SEED_ADMIN_EMAIL: value.SEED_ADMIN_EMAIL,
+  SEED_ADMIN_PASSWORD: value.SEED_ADMIN_PASSWORD,
 });
