@@ -14,6 +14,7 @@ const router = Router();
 
 router.get('/', validate(listShowsSchema), showController.listShows);
 router.get('/:id', validate(objectIdParamSchema), showController.getShow);
+router.get('/:id/seats', validate(objectIdParamSchema), showController.getShowSeats);
 
 router.post('/', protect, staffOnly, validate(createShowSchema), showController.createShow);
 router.patch('/:id', protect, staffOnly, validate(updateShowSchema), showController.updateShow);

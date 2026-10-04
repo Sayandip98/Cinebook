@@ -39,3 +39,5 @@ export const existsUpcomingForTheater = (theaterId) =>
   Show.exists({ theater: theaterId, ...upcoming() });
 
 export const existsForMovie = (movieId) => Show.exists({ movie: movieId });
+
+export const deleteById = (id) => Show.findByIdAndDelete(id);

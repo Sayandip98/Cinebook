@@ -2,6 +2,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { HTTP_STATUS } from '../constants/httpStatus.js';
 import * as showService from '../services/show.service.js';
+import * as seatService from '../services/seat.service.js';
 
 const getMeta = (req) => ({ ip: req.ip });
 
@@ -37,4 +38,10 @@ export const updateShow = asyncHandler(async (req, res) => {
 export const cancelShow = asyncHandler(async (req, res) => {
   const show = await showService.cancelShow(req.user, req.validated.params.id, getMeta(req));
   ApiResponse.send(res, { message: 'Show cancelled', data: { show } });
+});
+
+export const getShowSeats = asyncHandler(async (req, res) => {
+  const seatMap = await seatService.getSeatMap(req.validated.params.id);
+  res.set('Cache-Control', 'no-store');
+  ApiResponse.send(res, { data: seatMap });
 });

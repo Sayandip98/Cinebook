@@ -28,6 +28,8 @@ const schema = Joi.object({
   CLOUDINARY_CLOUD_NAME: Joi.string(),
   CLOUDINARY_API_KEY: Joi.string(),
   CLOUDINARY_API_SECRET: Joi.string(),
+  SEAT_LOCK_MINUTES: Joi.number().integer().min(2).max(30).default(8),
+  CONVENIENCE_FEE_PER_SEAT: Joi.number().min(0).default(20),
 }).unknown(true);
 
 const { error, value } = schema.validate(process.env, { abortEarly: false });
@@ -63,4 +65,6 @@ export const env = Object.freeze({
   CLOUDINARY_CLOUD_NAME: value.CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY: value.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: value.CLOUDINARY_API_SECRET,
+  SEAT_LOCK_MINUTES: value.SEAT_LOCK_MINUTES,
+  CONVENIENCE_FEE_PER_SEAT: value.CONVENIENCE_FEE_PER_SEAT,
 });

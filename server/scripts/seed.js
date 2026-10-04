@@ -9,8 +9,9 @@ import { movies } from './seedData/movies.js';
 import { theaters } from './seedData/theaters.js';
 import { screenLayouts } from './seedData/screenLayouts.js';
 import { coupons } from './seedData/coupons.js';
+import { generateSeatList, calculateSeatPrice } from '../src/utils/seatLayout.js';
 
-const { User, Movie, Theater, Screen, Show, Coupon } = models;
+const { User, Movie, Theater, Screen, Show, Coupon, ShowSeat } = models;
 
 const FRESH = process.argv.includes('--fresh');
 const DAYS_AHEAD = 3;
@@ -118,6 +119,23 @@ const seedTheatersAndScreens = async (usersByEmail) => {
   return seededScreens;
 };
 
+const ensureSeats = async (show, screen) => {
+  if (await ShowSeat.exists({ show: show._id })) return;
+
+  const seats = generateSeatList(screen.seatLayout).map((seat) => ({
+    show: show._id,
+    seatLabel: seat.seatLabel,
+    row: seat.row,
+    column: seat.column,
+    category: seat.category,
+    price: calculateSeatPrice(show.basePrice, seat.priceMultiplier),
+  }));
+  await ShowSeat.insertMany(seats);
+
+  summary.ShowSeat ??= { created: 0, existing: 0 };
+  summary.ShowSeat.created += seats.length;
+};
+
 const seedShows = async (seededMovies, seededScreens) => {
   const nowShowing = seededMovies.filter((movie) => movie.status === MOVIE_STATUS.NOW_SHOWING);
   if (nowShowing.length === 0) return;
@@ -135,7 +153,7 @@ const seedShows = async (seededMovies, seededScreens) => {
         const movie = nowShowing[(screenIndex + day + slotIndex) % nowShowing.length];
         const endTime = new Date(startTime.getTime() + movie.durationMinutes * MS_PER_MINUTE);
 
-        await findOrCreate(
+        const show = await findOrCreate(
           'Show',
           Show,
           { screen: screen._id, startTime },
@@ -150,6 +168,8 @@ const seedShows = async (seededMovies, seededScreens) => {
             basePrice: BASE_PRICE_BY_FORMAT[screen.type],
           },
         );
+
+        await ensureSeats(show, screen);
       }
     }
   }

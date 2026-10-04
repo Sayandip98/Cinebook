@@ -22,3 +22,9 @@ export const authLimiter = createLimiter({
   limit: 10,
   message: 'Too many attempts. Please try again in 15 minutes.',
 });
+
+export const bookingLimiter = createLimiter({
+  windowMs: 10 * 60 * 1000,
+  limit: 20,
+  message: 'Too many booking attempts. Please try again shortly.',
+});

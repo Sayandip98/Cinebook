@@ -14,6 +14,7 @@ import * as screenRepository from '../repositories/screen.repository.js';
 import * as theaterRepository from '../repositories/theater.repository.js';
 import * as bookingRepository from '../repositories/booking.repository.js';
 import * as auditService from './audit.service.js';
+import * as seatService from './seat.service.js';
 
 const MS_PER_MINUTE = 60 * 1000;
 const MS_PER_DAY = 24 * 60 * MS_PER_MINUTE;
@@ -155,7 +156,6 @@ export const createShow = async (actor, data, { ip } = {}) => {
   const endTime = computeEndTime(data.startTime, movie);
   await assertNoOverlap(screen._id, data.startTime, endTime);
 
-  // TODO (Phase 6): generate the ShowSeat documents for this show right here.
   const show = await showRepository.create({
     movie: movie._id,
     screen: screen._id,
@@ -166,6 +166,15 @@ export const createShow = async (actor, data, { ip } = {}) => {
     format: screen.type,
     basePrice: data.basePrice,
   });
+
+  try {
+    await seatService.generateForShow(show, screen);
+  } catch (error) {
+    // Never leave a show without seats.
+    await seatService.deleteForShow(show._id);
+    await showRepository.deleteById(show._id);
+    throw error;
+  }
 
   await auditService.record({
     actorId: actor._id,
@@ -190,7 +199,7 @@ export const updateShow = async (actor, id, data, { ip } = {}) => {
   const movie = await requireMovie(show.movie);
 
   if (data.language !== undefined) show.language = matchMovieLanguage(movie, data.language);
-  // TODO (Phase 6): when basePrice changes, update the prices of this show's ShowSeats.
+
   if (data.basePrice !== undefined) show.basePrice = data.basePrice;
 
   if (data.startTime !== undefined) {
@@ -202,6 +211,11 @@ export const updateShow = async (actor, id, data, { ip } = {}) => {
   }
 
   await show.save();
+
+  if (data.basePrice !== undefined) {
+    const screen = await screenRepository.findById(show.screen);
+    await seatService.repriceShow(show, screen);
+  }
 
   await auditService.record({
     actorId: actor._id,
