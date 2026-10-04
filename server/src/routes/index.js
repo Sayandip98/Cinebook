@@ -9,6 +9,7 @@ import theaterRoutes from './theater.routes.js';
 import screenRoutes from './screen.routes.js';
 import showRoutes from './show.routes.js';
 import bookingRoutes from './booking.routes.js';
+import paymentRoutes from './payment.routes.js';
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use('/theaters', theaterRoutes);
 router.use('/screens', screenRoutes);
 router.use('/shows', showRoutes);
 router.use('/bookings', bookingRoutes);
+router.use('/payments', paymentRoutes);
 
 if (!env.isProduction) {
   router.get('/_debug/error', () => {

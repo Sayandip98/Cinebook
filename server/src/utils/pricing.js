@@ -7,3 +7,5 @@ export const calculateBookingTotals = (seats, { convenienceFeePerSeat, discount 
 
   return { subtotal, discount, convenienceFee, totalAmount };
 };
+
+export const toPaise = (rupees) => Math.round(rupees * 100);

@@ -11,6 +11,7 @@ import { globalLimiter } from './middlewares/rateLimiter.middleware.js';
 import { notFound } from './middlewares/notFound.middleware.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 import routes from './routes/index.js';
+import * as paymentController from './controllers/payment.controller.js';
 
 const app = express();
 
@@ -26,6 +27,12 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(globalLimiter);
+
+app.post(
+  '/api/v1/payments/webhook',
+  express.raw({ type: 'application/json', limit: '100kb' }),
+  paymentController.handleWebhook,
+);
 
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));

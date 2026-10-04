@@ -54,3 +54,15 @@ export const releaseExpiredLocks = (now) =>
 
 export const updatePriceByCategory = (showId, category, price) =>
   ShowSeat.updateMany({ show: showId, category }, { $set: { price } });
+
+export const markBookedByBooking = (bookingId, session) =>
+  ShowSeat.updateMany(
+    { booking: bookingId, status: SEAT_STATUS.LOCKED },
+    { $set: { status: SEAT_STATUS.BOOKED }, $unset: { lockedBy: 1, lockExpiresAt: 1 } },
+    { session },
+  );
+
+export const releaseBookedByBooking = (bookingId, session) =>
+  ShowSeat.updateMany({ booking: bookingId, status: SEAT_STATUS.BOOKED }, releaseUpdate(), {
+    session,
+  });

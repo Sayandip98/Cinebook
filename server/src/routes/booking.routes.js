@@ -19,6 +19,7 @@ router.post(
 );
 router.get('/my', validate(listMyBookingsSchema), bookingController.listMyBookings);
 router.get('/:id', validate(objectIdParamSchema), bookingController.getBooking);
+router.get('/:id/ticket', validate(objectIdParamSchema), bookingController.getTicket);
 router.post('/:id/cancel', validate(objectIdParamSchema), bookingController.cancelBooking);
 
 export default router;

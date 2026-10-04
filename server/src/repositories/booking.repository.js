@@ -13,7 +13,35 @@ const POPULATE = {
 
 export const create = (data) => Booking.create(data);
 
-export const findById = (id) => Booking.findById(id);
+export const findById = (id, session) => Booking.findById(id).session(session ?? null);
+
+export const confirmPending = (id, session) =>
+  Booking.findOneAndUpdate(
+    { _id: id, status: BOOKING_STATUS.PENDING },
+    { $set: { status: BOOKING_STATUS.CONFIRMED } },
+    { new: true, session },
+  );
+
+export const cancelConfirmed = (id, { reason, refundAmount }, session) =>
+  Booking.findOneAndUpdate(
+    { _id: id, status: BOOKING_STATUS.CONFIRMED, checkedInAt: null },
+    {
+      $set: {
+        status: BOOKING_STATUS.CANCELLED,
+        cancelledAt: new Date(),
+        cancellationReason: reason,
+        refundAmount,
+      },
+    },
+    { new: true, session },
+  );
+
+export const markRefunded = (id) =>
+  Booking.findOneAndUpdate(
+    { _id: id, status: BOOKING_STATUS.CANCELLED },
+    { $set: { status: BOOKING_STATUS.REFUNDED } },
+    { new: true },
+  );
 
 export const findByIdPopulated = (id) => Booking.findById(id).populate(POPULATE);
 

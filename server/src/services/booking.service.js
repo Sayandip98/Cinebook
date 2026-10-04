@@ -11,6 +11,8 @@ import { calculateBookingTotals } from '../utils/pricing.js';
 import * as bookingRepository from '../repositories/booking.repository.js';
 import * as showRepository from '../repositories/show.repository.js';
 import * as seatService from './seat.service.js';
+import * as paymentService from './payment.service.js';
+import * as ticketService from './ticket.service.js';
 
 const notFound = () => new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking not found');
 
@@ -99,9 +101,9 @@ export const cancelBooking = async (actor, id) => {
   const booking = await requireAccessibleBooking(actor, id);
 
   if (booking.status === BOOKING_STATUS.CONFIRMED) {
-    // TODO (Phase 7): refund policy based on time left before the show.
-    throw new ApiError(HTTP_STATUS.CONFLICT, 'Cancelling paid bookings is not available yet');
+    return paymentService.cancelPaidBooking(actor, booking);
   }
+
   if (booking.status !== BOOKING_STATUS.PENDING) {
     throw new ApiError(HTTP_STATUS.CONFLICT, `Booking is already ${booking.status.toLowerCase()}`);
   }
@@ -114,4 +116,17 @@ export const cancelBooking = async (actor, id) => {
   await seatService.releaseBookingSeats(booking._id);
   logger.info('Pending booking cancelled', { bookingId: booking.id, userId: String(actor._id) });
   return bookingRepository.findByIdPopulated(booking._id);
+};
+
+export const getTicket = async (actor, id) => {
+  const booking = await requireAccessibleBooking(actor, id);
+  if (booking.status !== BOOKING_STATUS.CONFIRMED) {
+    throw new ApiError(HTTP_STATUS.CONFLICT, 'A ticket is available only for confirmed bookings');
+  }
+
+  const [populated, qrCode] = await Promise.all([
+    bookingRepository.findByIdPopulated(booking._id),
+    ticketService.generateQrDataUrl(booking.bookingCode),
+  ]);
+  return { booking: populated, qrCode };
 };
