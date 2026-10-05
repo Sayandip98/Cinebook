@@ -1,0 +1,136 @@
+.hero {
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, var(--hero-glow-1), transparent 60%),
+    radial-gradient(40rem 25rem at 0% 100%, var(--hero-glow-2), transparent 60%),
+    linear-gradient(180deg, var(--hero-bg-start), var(--hero-bg-end));
+}
+
+.inner {
+  padding-block: var(--space-12) var(--space-8);
+}
+
+.slide {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.copy {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 38rem;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.2rem 0.65rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.rating {
+  color: var(--color-accent);
+}
+
+.eyebrow {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(2.2rem, 6vw, 3.9rem);
+}
+
+.meta {
+  color: var(--color-primary-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.posterCard {
+  display: none;
+  width: 15rem;
+  justify-self: center;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.dots {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+
+.dot {
+  width: 1.25rem;
+  height: 0.3rem;
+  padding: 0;
+  background: var(--color-border);
+  border: 0;
+  border-radius: var(--radius-full);
+  transition:
+    width 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.dotActive {
+  width: 2.5rem;
+  background: var(--color-primary-text);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (min-width: 900px) {
+  .inner {
+    padding-block: var(--space-16) var(--space-8);
+  }
+
+  .slide {
+    grid-template-columns: 1.4fr 0.6fr;
+    min-height: 28rem;
+  }
+
+  .posterCard {
+    display: block;
+    transform: rotate(2deg);
+  }
+}

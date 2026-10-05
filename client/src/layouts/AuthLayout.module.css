@@ -1,0 +1,77 @@
+.shell {
+  display: grid;
+  min-height: 100vh;
+}
+
+.brandPanel {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-12);
+  background:
+    radial-gradient(30rem 20rem at 100% 0%, rgba(236, 72, 153, 0.35), transparent 60%),
+    linear-gradient(160deg, #2e1065, #5b21b6 55%, #86198f);
+  color: #fff;
+}
+
+.headline {
+  max-width: 22rem;
+  margin-bottom: var(--space-6);
+  font-size: 2.6rem;
+}
+
+.perks {
+  display: grid;
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+}
+
+.perks li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.note {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--font-size-sm);
+}
+
+.formPanel {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  padding-block: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .brandPanel {
+    display: flex;
+  }
+
+  .mobileLogo {
+    visibility: hidden;
+  }
+
+  .formPanel {
+    padding: var(--space-6) var(--space-8);
+  }
+}

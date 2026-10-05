@@ -1,0 +1,36 @@
+.section {
+  margin-top: var(--space-16);
+}
+
+.row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(9.5rem, 44%);
+  gap: var(--space-4);
+  padding-bottom: var(--space-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.row>* {
+  scroll-snap-align: start;
+}
+
+.skeleton {
+  aspect-ratio: 2 / 3.6;
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-auto-columns: minmax(10rem, 24%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .row {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(5, 1fr);
+    overflow: visible;
+  }
+}

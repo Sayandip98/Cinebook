@@ -1,0 +1,139 @@
+.section {
+  margin-top: var(--space-16);
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3) var(--space-4);
+  align-items: center;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.item> :last-child {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.itemIcon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-text);
+}
+
+.itemName {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.itemMeta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 0.1rem 0.5rem;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-sm);
+  color: var(--color-accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.promo {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  padding: var(--space-6);
+  background:
+    radial-gradient(20rem 12rem at 100% 0%, var(--color-primary-soft), transparent 70%),
+    var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.promoEyebrow {
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.promoTitle {
+  font-size: 1.5rem;
+}
+
+.perks {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.perks li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.perks svg {
+  flex-shrink: 0;
+  color: var(--color-primary-text);
+}
+
+.promoLink {
+  color: var(--color-primary-text);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .item {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .item> :last-child {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 1.7fr 1fr;
+  }
+}

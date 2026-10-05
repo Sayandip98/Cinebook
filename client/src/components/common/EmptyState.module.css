@@ -1,0 +1,27 @@
+.wrap {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-12) var(--space-4);
+  text-align: center;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-full);
+  color: var(--color-primary-text);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+}
+
+.message {
+  max-width: 28rem;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-muted);
+}
