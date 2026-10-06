@@ -9,6 +9,7 @@ import {
   changeRoleSchema,
   changeStatusSchema,
 } from '../validators/user.validator.js';
+import { adminRefundsSchema } from '../validators/staff.validator.js';
 
 const router = Router();
 
@@ -18,5 +19,7 @@ router.get('/users', validate(adminListUsersSchema), adminController.listUsers);
 router.get('/users/:id', validate(objectIdParamSchema), adminController.getUser);
 router.patch('/users/:id/role', validate(changeRoleSchema), adminController.changeRole);
 router.patch('/users/:id/status', validate(changeStatusSchema), adminController.changeStatus);
+router.get('/refunds', validate(adminRefundsSchema), adminController.listRefunds);
+router.post('/payments/:id/refund', validate(objectIdParamSchema), adminController.retryRefund);
 
 export default router;

@@ -5,13 +5,13 @@ import { ChevronDown, LayoutDashboard, LogOut, Menu, Search, Ticket, User, X } f
 import { useAuth } from '@/hooks/useAuth';
 import { useLogoutMutation } from '@/features/auth/authApi';
 import { ROUTES } from '@/constants/routes';
-import { ROLES, STAFF_ROLES } from '@/constants/roles';
 import { cx } from '@/utils/classNames';
 import Button from '@/components/common/Button';
 import Logo from '@/components/common/Logo';
 import ThemeToggle from '@/components/common/ThemeToggle';
 import CitySelect from './CitySelect';
 import styles from './Navbar.module.css';
+import { STAFF_ROLES } from '@/constants/roles';
 
 const linkClass = ({ isActive }) => cx(styles.link, isActive && styles.active);
 
@@ -25,7 +25,7 @@ export default function Navbar() {
   const userMenuRef = useRef(null);
 
   const isStaff = STAFF_ROLES.includes(user?.role);
-  const dashboardPath = user?.role === ROLES.ADMIN ? ROUTES.ADMIN : ROUTES.MANAGE;
+    const dashboardPath = ROUTES.MANAGE;
 
   useEffect(() => {
     if (!userMenuOpen) return undefined;

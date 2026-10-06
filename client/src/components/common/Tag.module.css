@@ -1,0 +1,28 @@
+.tag {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.warning {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.danger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.neutral {
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+}

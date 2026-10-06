@@ -41,3 +41,12 @@ export const existsUpcomingForTheater = (theaterId) =>
 export const existsForMovie = (movieId) => Show.exists({ movie: movieId });
 
 export const deleteById = (id) => Show.findByIdAndDelete(id);
+
+export const findIdsByTheaters = (theaterIds) =>
+  Show.find({ theater: { $in: theaterIds } }).distinct('_id');
+
+export const countUpcoming = (theaterIds) => {
+  const filter = upcoming();
+  if (theaterIds) filter.theater = { $in: theaterIds };
+  return Show.countDocuments(filter);
+};

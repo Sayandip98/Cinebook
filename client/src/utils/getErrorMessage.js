@@ -19,3 +19,12 @@ export const applyFieldErrors = (error, setError) => {
 };
 
 export const isMissing = (error) => error?.status === 404 || error?.status === 400;
+
+// Joins server field errors into one readable line, otherwise falls back to the message.
+export const getErrorDetails = (error, fallback) => {
+  const details = error?.data?.errors;
+  if (Array.isArray(details) && details.length > 0) {
+    return details.map((item) => item.message).join('. ');
+  }
+  return getErrorMessage(error, fallback);
+};

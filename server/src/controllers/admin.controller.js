@@ -1,6 +1,7 @@
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import * as adminService from '../services/admin.service.js';
+import * as paymentService from '../services/payment.service.js';
 
 const getMeta = (req) => ({ ip: req.ip });
 
@@ -32,4 +33,14 @@ export const changeStatus = asyncHandler(async (req, res) => {
     getMeta(req),
   );
   ApiResponse.send(res, { message: 'User status updated', data: { user } });
+});
+
+export const listRefunds = asyncHandler(async (req, res) => {
+  const { payments, meta } = await adminService.listPendingRefunds(req.validated.query);
+  ApiResponse.send(res, { data: { payments }, meta });
+});
+
+export const retryRefund = asyncHandler(async (req, res) => {
+  const payment = await paymentService.retryRefund(req.user, req.validated.params.id, getMeta(req));
+  ApiResponse.send(res, { message: 'Refund processed', data: { payment } });
 });

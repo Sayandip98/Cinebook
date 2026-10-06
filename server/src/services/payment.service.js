@@ -15,6 +15,9 @@ import * as showRepository from '../repositories/show.repository.js';
 import * as showSeatRepository from '../repositories/showSeat.repository.js';
 import * as bookingConfirmationService from './bookingConfirmation.service.js';
 import * as notificationService from './notification.service.js';
+import { PAYMENT_STATUS } from '../constants/paymentStatus.js';
+import { AUDIT_ACTIONS } from '../constants/auditActions.js';
+import * as auditService from './audit.service.js';
 
 const CURRENCY = 'INR';
 
@@ -341,4 +344,45 @@ export const cancelPaidBooking = async (actor, booking) => {
     actorId: String(actor._id),
   });
   return bookingRepository.findByIdPopulated(booking._id);
+};
+
+// Admin tool: retries a refund that failed earlier.
+export const retryRefund = async (actor, paymentId, { ip } = {}) => {
+  assertConfigured();
+
+  const payment = await paymentRepository.findById(paymentId);
+  if (!payment) throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Payment not found');
+
+  const needsRefund =
+    payment.status === PAYMENT_STATUS.PAID && payment.failureReason?.startsWith('Refund failed');
+  if (!needsRefund) {
+    throw new ApiError(HTTP_STATUS.CONFLICT, 'This payment is not waiting for a refund');
+  }
+
+  // A user cancellation refunds a percentage; every other case refunds the full payment.
+  const booking = await bookingRepository.findById(payment.booking);
+  const isPaidCancellation = booking?.status === BOOKING_STATUS.CANCELLED && booking.refundAmount > 0;
+  const amountPaise = isPaidCancellation ? toPaise(booking.refundAmount) : payment.amount;
+
+  const refunded = await issueRefund(payment, amountPaise, 'Refund processed by admin');
+  if (!refunded) {
+    throw new ApiError(502, 'The refund failed again. Check the Razorpay dashboard, then retry.');
+  }
+  if (isPaidCancellation) await bookingRepository.markRefunded(booking._id);
+
+  await auditService.record({
+    actorId: actor._id,
+    action: AUDIT_ACTIONS.REFUND_RETRIED,
+    entity: 'Payment',
+    entityId: payment._id,
+    meta: { amountPaise },
+    ip,
+  });
+  await notificationService.notify(payment.user, {
+    type: NOTIFICATION_TYPE.REFUND_PROCESSED,
+    title: 'Refund processed',
+    message: `Rs ${amountPaise / 100} has been refunded to your original payment method.`,
+  });
+
+  return paymentRepository.findById(payment._id);
 };

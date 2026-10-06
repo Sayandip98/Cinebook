@@ -5,10 +5,12 @@ export const moviesApi = baseApi.injectEndpoints({
     getMovies: builder.query({
       query: (params) => ({ url: '/movies', params }),
       transformResponse: (response) => ({ movies: response.data.movies, meta: response.meta }),
+      providesTags: ['Movie'],
     }),
     getMovie: builder.query({
       query: (slug) => `/movies/${slug}`,
       transformResponse: (response) => response.data.movie,
+      providesTags: ['Movie'],
     }),
   }),
 });

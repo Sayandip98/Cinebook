@@ -41,3 +41,20 @@ export const recordFailureReason = (id, failureReason) =>
 
 export const addWebhookEvent = (id, eventId) =>
   Payment.updateOne({ _id: id }, { $addToSet: { webhookEventIds: eventId } });
+
+// A refund that failed and is waiting for an admin.
+const NEEDS_REFUND = { status: PAYMENT_STATUS.PAID, failureReason: /^Refund failed/ };
+
+export const findById = (id) => Payment.findById(id);
+
+export const findPendingRefunds = ({ skip, limit }) =>
+  Payment.find(NEEDS_REFUND)
+    .sort({ updatedAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate([
+      { path: 'booking', select: 'bookingCode totalAmount refundAmount status' },
+      { path: 'user', select: 'name email' },
+    ]);
+
+export const countPendingRefunds = () => Payment.countDocuments(NEEDS_REFUND);

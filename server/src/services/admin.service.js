@@ -10,6 +10,7 @@ import * as refreshTokenRepository from '../repositories/refreshToken.repository
 import * as auditService from './audit.service.js';
 import { ROLES } from '../constants/roles.js';
 import * as theaterRepository from '../repositories/theater.repository.js';
+import * as paymentRepository from '../repositories/payment.repository.js';
 
 const requireUser = async (id) => {
   const user = await userRepository.findById(id);
@@ -112,4 +113,15 @@ export const changeStatus = async (actor, targetId, isActive, { ip } = {}) => {
   logger.info('User status changed', { actorId: actor.id, targetId, isActive });
 
   return updated;
+};
+
+export const listPendingRefunds = async (query) => {
+  const { page, limit, skip } = parsePagination(query);
+
+  const [payments, total] = await Promise.all([
+    paymentRepository.findPendingRefunds({ skip, limit }),
+    paymentRepository.countPendingRefunds(),
+  ]);
+
+  return { payments, meta: buildPaginationMeta({ page, limit, total }) };
 };

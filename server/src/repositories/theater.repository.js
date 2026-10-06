@@ -19,3 +19,5 @@ export const findActiveCities = () => Theater.distinct('city', { isActive: true 
 
 export const findActiveIdsByCity = (city) =>
   Theater.find({ city: exactMatchInsensitive(city), isActive: true }).distinct('_id');
+
+export const findIdsByManager = (managerId) => Theater.find({ manager: managerId }).distinct('_id');

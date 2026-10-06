@@ -90,3 +90,20 @@ export const cancelPending = (id, reason) =>
     },
     { new: true },
   );
+
+const STAFF_POPULATE = [{ path: 'user', select: 'name email' }, POPULATE];
+
+export const findByCode = (bookingCode) => Booking.findOne({ bookingCode });
+
+export const findByIdForStaff = (id) => Booking.findById(id).populate(STAFF_POPULATE);
+
+export const findPaginatedForStaff = (filter, { skip, limit }) =>
+  Booking.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).populate(STAFF_POPULATE);
+
+// Atomic: returns null if the ticket was already used or is no longer confirmed.
+export const checkIn = (id, now) =>
+  Booking.findOneAndUpdate(
+    { _id: id, status: BOOKING_STATUS.CONFIRMED, checkedInAt: null },
+    { $set: { checkedInAt: now } },
+    { new: true },
+  );

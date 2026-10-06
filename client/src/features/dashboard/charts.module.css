@@ -1,0 +1,151 @@
+.stats {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: inherit;
+  text-decoration: none;
+}
+
+a.stat:hover {
+  border-color: var(--color-primary-text);
+}
+
+.statIcon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-text);
+}
+
+.statWarn {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.statLabel {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.statValue {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.statHint {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.panel {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.panelTitle {
+  margin-bottom: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 12rem;
+}
+
+.col {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.bar {
+  width: 100%;
+  background: var(--gradient-brand);
+  border-radius: 3px 3px 0 0;
+}
+
+.zero {
+  background: var(--color-border);
+}
+
+.axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.ranked {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rankTop {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.track {
+  height: 0.4rem;
+  margin: var(--space-1) 0;
+  overflow: hidden;
+  background: var(--color-surface-2);
+  border-radius: var(--radius-full);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--gradient-brand);
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.twoCol {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .twoCol {
+    grid-template-columns: 1fr 1fr;
+  }
+}

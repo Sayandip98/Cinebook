@@ -1,10 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import PublicLayout from '@/layouts/PublicLayout';
 import AuthLayout from '@/layouts/AuthLayout';
 import { ROLES, STAFF_ROLES } from '@/constants/roles';
 import HomePage from '@/pages/HomePage';
 import NotFoundPage from '@/pages/NotFoundPage';
-import PlaceholderPage from '@/pages/PlaceholderPage';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
 import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage';
@@ -24,6 +23,18 @@ import MyBookingsPage from '@/pages/MyBookingsPage';
 import BookingDetailsPage from '@/pages/BookingDetailsPage';
 import ProfilePage from '@/pages/ProfilePage';
 
+import { ROUTES } from '@/constants/routes';
+import DashboardLayout from '@/layouts/DashboardLayout';
+import OverviewPage from '@/pages/dashboard/OverviewPage';
+import StaffBookingsPage from '@/pages/dashboard/StaffBookingsPage';
+import StaffShowsPage from '@/pages/dashboard/StaffShowsPage';
+import StaffTheatersPage from '@/pages/dashboard/StaffTheatersPage';
+import ScreensPage from '@/pages/dashboard/ScreensPage';
+import CheckInPage from '@/pages/dashboard/CheckInPage';
+import AdminUsersPage from '@/pages/dashboard/AdminUsersPage';
+import AdminMoviesPage from '@/pages/dashboard/AdminMoviesPage';
+import AdminRefundsPage from '@/pages/dashboard/AdminRefundsPage';
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -42,17 +53,22 @@ export default function AppRoutes() {
           <Route path="profile" element={<ProfilePage />} />
         </Route>
 
-        <Route element={<RoleRoute roles={[ROLES.ADMIN]} />}>
-          <Route
-            path="admin/*"
-            element={<PlaceholderPage title="Admin dashboard" phase="Phase 10" />}
-          />
-        </Route>
         <Route element={<RoleRoute roles={STAFF_ROLES} />}>
-          <Route
-            path="manage/*"
-            element={<PlaceholderPage title="Manager dashboard" phase="Phase 10" />}
-          />
+          <Route element={<DashboardLayout />}>
+            <Route path="manage" element={<OverviewPage />} />
+            <Route path="manage/bookings" element={<StaffBookingsPage />} />
+            <Route path="manage/shows" element={<StaffShowsPage />} />
+            <Route path="manage/theaters" element={<StaffTheatersPage />} />
+            <Route path="manage/theaters/:id/screens" element={<ScreensPage />} />
+            <Route path="manage/check-in" element={<CheckInPage />} />
+
+            <Route element={<RoleRoute roles={[ROLES.ADMIN]} />}>
+              <Route path="admin" element={<Navigate to={ROUTES.MANAGE} replace />} />
+              <Route path="admin/users" element={<AdminUsersPage />} />
+              <Route path="admin/movies" element={<AdminMoviesPage />} />
+              <Route path="admin/refunds" element={<AdminRefundsPage />} />
+            </Route>
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

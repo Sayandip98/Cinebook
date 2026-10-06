@@ -56,3 +56,12 @@ export const buildDateOptions = (days = 7) =>
       month: monthFormatter.format(date),
     };
   });
+
+const fullDateFormatter = new Intl.DateTimeFormat('en-IN', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: IST,
+});
+
+export const formatDate = (isoDate) => fullDateFormatter.format(new Date(isoDate));
