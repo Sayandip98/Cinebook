@@ -1,0 +1,123 @@
+.dates {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-2);
+  overflow-x: auto;
+}
+
+.date {
+  display: grid;
+  flex-shrink: 0;
+  justify-items: center;
+  min-width: 4.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  line-height: 1.25;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition);
+}
+
+.date:hover {
+  border-color: var(--color-primary-text);
+}
+
+.date small {
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.date strong {
+  font-size: 1.15rem;
+}
+
+.dateActive,
+.dateActive:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.dateActive small {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.groups {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.busy {
+  opacity: 0.6;
+  transition: opacity var(--transition);
+}
+
+.group {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.groupTitle {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.groupTitle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.groupTitle a:hover {
+  color: var(--color-primary-text);
+}
+
+.groupSub {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.pill {
+  display: grid;
+  gap: 2px;
+  min-width: 6.75rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--transition);
+}
+
+.pill:hover {
+  background: var(--color-success-soft);
+}
+
+.time {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.pillMeta {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}

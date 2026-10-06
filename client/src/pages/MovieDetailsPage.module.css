@@ -1,0 +1,117 @@
+.hero {
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, var(--hero-glow-1), transparent 60%),
+    radial-gradient(40rem 25rem at 0% 100%, var(--hero-glow-2), transparent 60%),
+    linear-gradient(180deg, var(--hero-bg-start), var(--hero-bg-end));
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-8);
+  padding-block: var(--space-8) var(--space-12);
+}
+
+.poster {
+  width: min(60%, 15rem);
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.info {
+  display: grid;
+  gap: var(--space-4);
+  align-content: center;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.2rem 0.65rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.rating {
+  color: var(--color-accent);
+}
+
+.count {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips a {
+  display: inline-block;
+  padding: 0.15rem 0.75rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-full);
+  color: var(--color-primary-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+
+.chips a:hover {
+  text-decoration: underline;
+}
+
+.languages {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.description {
+  max-width: 42rem;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.credit {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.credit strong {
+  color: var(--color-text);
+}
+
+.shows {
+  margin-top: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .inner {
+    grid-template-columns: 15rem 1fr;
+    align-items: center;
+  }
+
+  .poster {
+    width: 100%;
+  }
+}

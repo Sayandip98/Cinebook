@@ -1,0 +1,98 @@
+.headLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.column {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ticket {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background:
+    radial-gradient(18rem 10rem at 50% 0%, var(--color-primary-soft), transparent 70%),
+    var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.ticketLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Always white so the code scans in dark mode. */
+.qrBox {
+  display: grid;
+  place-items: center;
+  width: 14rem;
+  min-height: 14rem;
+  padding: var(--space-3);
+  background: #fff;
+  border-radius: var(--radius-md);
+}
+
+.qrBox img {
+  width: 100%;
+}
+
+.code {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.used {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.notice {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+  padding: var(--space-4);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+}
+
+.hint {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.back {
+  color: var(--color-primary-text);
+  font-size: var(--font-size-sm);
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 20rem 1fr;
+  }
+}

@@ -15,3 +15,7 @@ export const ROUTES = Object.freeze({
 
 export const movieDetailsPath = (slug) => `${ROUTES.MOVIES}/${slug}`;
 export const theaterDetailsPath = (id) => `${ROUTES.THEATERS}/${id}`;
+
+export const showSeatsPath = (showId) => `/shows/${showId}/seats`;
+export const checkoutPath = (bookingId) => `/checkout/${bookingId}`;
+export const bookingDetailsPath = (bookingId) => `${ROUTES.BOOKINGS}/${bookingId}`;

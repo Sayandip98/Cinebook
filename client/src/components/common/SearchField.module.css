@@ -1,0 +1,28 @@
+.form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: min(100%, 18rem);
+  padding: 0.5rem 0.9rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+}
+
+.form:focus-within {
+  border-color: var(--color-primary-text);
+}
+
+.form input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.form input:focus-visible {
+  outline: none;
+}

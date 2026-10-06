@@ -13,7 +13,11 @@ export const theatersApi = baseApi.injectEndpoints({
       query: () => '/theaters/cities',
       transformResponse: (response) => response.data.cities,
     }),
+    getTheater: builder.query({
+      query: (id) => `/theaters/${id}`,
+      transformResponse: (response) => response.data.theater,
+    }),
   }),
 });
 
-export const { useGetTheatersQuery, useGetCitiesQuery } = theatersApi;
+export const { useGetTheatersQuery, useGetCitiesQuery, useGetTheaterQuery } = theatersApi;

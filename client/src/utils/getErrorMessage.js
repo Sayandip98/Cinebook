@@ -17,3 +17,5 @@ export const applyFieldErrors = (error, setError) => {
   });
   return applied;
 };
+
+export const isMissing = (error) => error?.status === 404 || error?.status === 400;

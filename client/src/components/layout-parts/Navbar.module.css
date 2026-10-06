@@ -10,8 +10,9 @@
 .bar {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  width: 100%;
   min-height: 4rem;
+  gap: var(--space-4);
 }
 
 .city,
@@ -19,19 +20,29 @@
 .searchDesktop,
 .guestActions {
   display: none;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .links {
-  gap: var(--space-1);
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
 }
 
 .link {
-  padding: 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 0.8rem;
   border-radius: var(--radius-md);
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
+  white-space: nowrap;
   transition:
     background-color var(--transition),
     color var(--transition);
@@ -50,6 +61,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  width: 100%;
   padding: 0.4rem 0.8rem;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -79,6 +91,7 @@
   align-items: center;
   gap: var(--space-2);
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .burger {
@@ -90,6 +103,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
+  cursor: pointer;
 }
 
 .userMenu {
@@ -105,6 +119,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   color: var(--color-text-muted);
+  cursor: pointer;
 }
 
 .avatar,
@@ -138,8 +153,8 @@
 
 .userName {
   padding: var(--space-2) var(--space-3);
-  border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--space-1);
+  border-bottom: 1px solid var(--color-border);
   font-weight: 600;
 }
 
@@ -156,6 +171,7 @@
   font-size: var(--font-size-sm);
   text-align: left;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .menuItem:hover {
@@ -178,17 +194,20 @@
 }
 
 .mobileLinks .link {
+  display: block;
   padding: 0.7rem 0.8rem;
   font-size: var(--font-size-md);
 }
 
 .mobileLogout {
+  width: 100%;
   padding: 0.7rem 0.8rem;
   background: none;
   border: 0;
   border-radius: var(--radius-md);
   color: var(--color-danger);
   text-align: left;
+  cursor: pointer;
 }
 
 @media (min-width: 900px) {
@@ -201,7 +220,9 @@
 
   .searchDesktop {
     display: block;
-    width: 11rem;
+    flex: 1;
+    min-width: 0;
+    max-width: 15rem;
   }
 
   .burger,
@@ -213,5 +234,11 @@
 @media (min-width: 1100px) {
   .searchDesktop {
     width: 15rem;
+  }
+}
+
+@media (min-width: 1300px) {
+  .searchDesktop {
+    width: 18rem;
   }
 }

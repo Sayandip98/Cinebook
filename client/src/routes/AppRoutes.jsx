@@ -14,25 +14,32 @@ import ProtectedRoute from './ProtectedRoute';
 import RoleRoute from './RoleRoute';
 import GuestRoute from './GuestRoute';
 
+import MoviesPage from '@/pages/MoviesPage';
+import MovieDetailsPage from '@/pages/MovieDetailsPage';
+import TheatersPage from '@/pages/TheatersPage';
+import TheaterDetailsPage from '@/pages/TheaterDetailsPage';
+import SeatSelectionPage from '@/pages/SeatSelectionPage';
+import CheckoutPage from '@/pages/CheckoutPage';
+import MyBookingsPage from '@/pages/MyBookingsPage';
+import BookingDetailsPage from '@/pages/BookingDetailsPage';
+import ProfilePage from '@/pages/ProfilePage';
+
 export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<PublicLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="movies" element={<PlaceholderPage title="Movies" phase="Phase 9" />} />
-        <Route
-          path="movies/:slug"
-          element={<PlaceholderPage title="Movie details" phase="Phase 9" />}
-        />
-        <Route path="theaters" element={<PlaceholderPage title="Theaters" phase="Phase 9" />} />
-        <Route path="theaters/:id" element={<PlaceholderPage title="Theater" phase="Phase 9" />} />
+        <Route path="movies" element={<MoviesPage />} />
+        <Route path="movies/:slug" element={<MovieDetailsPage />} />
+        <Route path="theaters" element={<TheatersPage />} />
+        <Route path="theaters/:id" element={<TheaterDetailsPage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="bookings"
-            element={<PlaceholderPage title="My bookings" phase="Phase 9" />}
-          />
-          <Route path="profile" element={<PlaceholderPage title="Profile" phase="Phase 9" />} />
+          <Route path="shows/:id/seats" element={<SeatSelectionPage />} />
+          <Route path="checkout/:id" element={<CheckoutPage />} />
+          <Route path="bookings" element={<MyBookingsPage />} />
+          <Route path="bookings/:id" element={<BookingDetailsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
 
         <Route element={<RoleRoute roles={[ROLES.ADMIN]} />}>
