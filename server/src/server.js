@@ -3,6 +3,7 @@ import { env } from './config/env.js';
 import { logger } from './config/logger.js';
 import { connectDB, disconnectDB } from './config/db.js';
 import { startJobs, stopJobs } from './jobs/seatExpiry.job.js';
+import { startReminderJob, stopReminderJob } from './jobs/showReminder.job.js';
 
 const SHUTDOWN_TIMEOUT_MS = 10000;
 
@@ -11,12 +12,16 @@ const start = async () => {
 
   const server = app.listen(env.PORT, () => {
     logger.info(`Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
-    if (!env.isTest) startJobs();
+    if (!env.isTest) {
+      startJobs();
+      startReminderJob();
+    }
   });
 
   const shutdown = (reason) => {
     logger.info(`Shutting down (${reason})`);
     stopJobs();
+    stopReminderJob();
     setTimeout(() => process.exit(1), SHUTDOWN_TIMEOUT_MS).unref();
     server.close(async () => {
       await disconnectDB();

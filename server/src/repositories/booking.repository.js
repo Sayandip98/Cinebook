@@ -107,3 +107,31 @@ export const checkIn = (id, now) =>
     { $set: { checkedInAt: now } },
     { new: true },
   );
+
+export const existsConfirmedForShows = (userId, showIds) =>
+  Booking.exists({ user: userId, status: BOOKING_STATUS.CONFIRMED, show: { $in: showIds } });
+
+// Confirmed bookings, plus pending ones whose hold is still alive.
+export const countCouponUsageByUser = (userId, couponId) =>
+  Booking.countDocuments({
+    user: userId,
+    coupon: couponId,
+    $or: [
+      { status: BOOKING_STATUS.CONFIRMED },
+      { status: BOOKING_STATUS.PENDING, expiresAt: { $gt: new Date() } },
+    ],
+  });
+
+// `reminderSentAt: null` also matches documents where the field does not exist.
+export const findDueForReminder = (showIds, limit) =>
+  Booking.find({ show: { $in: showIds }, status: BOOKING_STATUS.CONFIRMED, reminderSentAt: null })
+    .limit(limit)
+    .populate(POPULATE);
+
+// Atomic: only one caller can claim a booking's reminder.
+export const claimReminder = (id, now) =>
+  Booking.findOneAndUpdate(
+    { _id: id, status: BOOKING_STATUS.CONFIRMED, reminderSentAt: null },
+    { $set: { reminderSentAt: now } },
+    { new: true },
+  );

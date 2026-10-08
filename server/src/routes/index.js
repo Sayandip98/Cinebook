@@ -11,6 +11,9 @@ import showRoutes from './show.routes.js';
 import bookingRoutes from './booking.routes.js';
 import paymentRoutes from './payment.routes.js';
 import manageRoutes from './manage.routes.js';
+import couponRoutes from './coupon.routes.js';
+import reviewRoutes from './review.routes.js';
+import notificationRoutes from './notification.routes.js';
 
 const router = Router();
 
@@ -25,6 +28,9 @@ router.use('/shows', showRoutes);
 router.use('/bookings', bookingRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/manage', manageRoutes);
+router.use('/coupons', couponRoutes);
+router.use('/reviews', reviewRoutes);
+router.use('/notifications', notificationRoutes);
 
 if (!env.isProduction) {
   router.get('/_debug/error', () => {

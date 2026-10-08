@@ -35,6 +35,9 @@ import AdminUsersPage from '@/pages/dashboard/AdminUsersPage';
 import AdminMoviesPage from '@/pages/dashboard/AdminMoviesPage';
 import AdminRefundsPage from '@/pages/dashboard/AdminRefundsPage';
 
+import NotificationsPage from '@/pages/NotificationsPage';
+import AdminCouponsPage from '@/pages/dashboard/AdminCouponsPage';
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -51,27 +54,29 @@ export default function AppRoutes() {
           <Route path="bookings" element={<MyBookingsPage />} />
           <Route path="bookings/:id" element={<BookingDetailsPage />} />
           <Route path="profile" element={<ProfilePage />} />
-        </Route>
-
-        <Route element={<RoleRoute roles={STAFF_ROLES} />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="manage" element={<OverviewPage />} />
-            <Route path="manage/bookings" element={<StaffBookingsPage />} />
-            <Route path="manage/shows" element={<StaffShowsPage />} />
-            <Route path="manage/theaters" element={<StaffTheatersPage />} />
-            <Route path="manage/theaters/:id/screens" element={<ScreensPage />} />
-            <Route path="manage/check-in" element={<CheckInPage />} />
-
-            <Route element={<RoleRoute roles={[ROLES.ADMIN]} />}>
-              <Route path="admin" element={<Navigate to={ROUTES.MANAGE} replace />} />
-              <Route path="admin/users" element={<AdminUsersPage />} />
-              <Route path="admin/movies" element={<AdminMoviesPage />} />
-              <Route path="admin/refunds" element={<AdminRefundsPage />} />
-            </Route>
-          </Route>
+          <Route path="notifications" element={<NotificationsPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
+      </Route>
+
+      <Route element={<RoleRoute roles={STAFF_ROLES} />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="manage" element={<OverviewPage />} />
+          <Route path="manage/bookings" element={<StaffBookingsPage />} />
+          <Route path="manage/shows" element={<StaffShowsPage />} />
+          <Route path="manage/theaters" element={<StaffTheatersPage />} />
+          <Route path="manage/theaters/:id/screens" element={<ScreensPage />} />
+          <Route path="manage/check-in" element={<CheckInPage />} />
+
+          <Route element={<RoleRoute roles={[ROLES.ADMIN]} />}>
+            <Route path="admin" element={<Navigate to={ROUTES.MANAGE} replace />} />
+            <Route path="admin/users" element={<AdminUsersPage />} />
+            <Route path="admin/movies" element={<AdminMoviesPage />} />
+            <Route path="admin/refunds" element={<AdminRefundsPage />} />
+            <Route path="admin/coupons" element={<AdminCouponsPage />} />
+          </Route>
+        </Route>
       </Route>
 
       <Route element={<AuthLayout />}>

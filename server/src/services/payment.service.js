@@ -18,6 +18,7 @@ import * as notificationService from './notification.service.js';
 import { PAYMENT_STATUS } from '../constants/paymentStatus.js';
 import { AUDIT_ACTIONS } from '../constants/auditActions.js';
 import * as auditService from './audit.service.js';
+import * as couponRepository from '../repositories/coupon.repository.js';
 
 const CURRENCY = 'INR';
 
@@ -148,7 +149,7 @@ const confirmInTransaction = (orderId, paymentId, method) =>
     const confirmed = await bookingRepository.confirmPending(booking._id, session);
     if (!confirmed) throw new RefundRequired('Booking could not be confirmed');
 
-    // TODO (Phase 11): increment the coupon usedCount here, inside the transaction.
+    if (booking.coupon) await couponRepository.incrementUsed(booking.coupon, session);
     return { outcome: OUTCOME.CONFIRMED, bookingId: booking._id };
   });
 
@@ -324,6 +325,7 @@ export const cancelPaidBooking = async (actor, booking) => {
       throw new ApiError(HTTP_STATUS.CONFLICT, 'Booking can no longer be cancelled');
     }
     await showSeatRepository.releaseBookedByBooking(booking._id, session);
+    if (booking.coupon) await couponRepository.decrementUsed(booking.coupon, session);
   });
 
   // Seats are free and the booking is cancelled; now return the money.
@@ -361,7 +363,8 @@ export const retryRefund = async (actor, paymentId, { ip } = {}) => {
 
   // A user cancellation refunds a percentage; every other case refunds the full payment.
   const booking = await bookingRepository.findById(payment.booking);
-  const isPaidCancellation = booking?.status === BOOKING_STATUS.CANCELLED && booking.refundAmount > 0;
+  const isPaidCancellation =
+    booking?.status === BOOKING_STATUS.CANCELLED && booking.refundAmount > 0;
   const amountPaise = isPaidCancellation ? toPaise(booking.refundAmount) : payment.amount;
 
   const refunded = await issueRefund(payment, amountPaise, 'Refund processed by admin');

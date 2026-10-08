@@ -7,6 +7,8 @@ import EmptyState from '@/components/common/EmptyState';
 import Loader from '@/components/common/Loader';
 import SeatGrid from '@/features/bookings/SeatGrid';
 import { useCreateBookingMutation } from '@/features/bookings/bookingsApi';
+import CouponBox from '@/features/coupons/CouponBox';
+import { useCoupon } from '@/features/coupons/useCoupon';
 import { useGetSeatMapQuery, useGetShowQuery } from '@/features/shows/showsApi';
 import { useAuth } from '@/hooks/useAuth';
 import { useNow } from '@/hooks/useNow';
@@ -49,6 +51,11 @@ export default function SeatSelectionPage() {
     () => selectedSeats.map((seat) => seat.seatLabel),
     [selectedSeats],
   );
+  const subtotal = useMemo(
+    () => selectedSeats.reduce((sum, seat) => sum + seat.price, 0),
+    [selectedSeats],
+  );
+  const coupon = useCoupon(subtotal);
 
   if (show.isLoading || seatMap.isLoading) return <Loader label="Loading seats" />;
 
@@ -66,9 +73,9 @@ export default function SeatSelectionPage() {
   const showData = show.data;
   const isClosed = showData.status !== 'SCHEDULED' || new Date(showData.startTime).getTime() <= now;
   const lostCount = selected.length - selectedSeats.length;
-  const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
+  const payable = Math.max(0, subtotal - coupon.discount);
   const maxReached = selectedLabels.length >= MAX_SEATS_PER_BOOKING;
-  const canProceed = selectedSeats.length > 0 && !isClosed && user.isVerified;
+  const canProceed = selectedSeats.length > 0 && !isClosed && user.isVerified && !coupon.isChecking;
 
   const toggleSeat = (label) => {
     if (selectedLabels.includes(label)) {
@@ -80,7 +87,11 @@ export default function SeatSelectionPage() {
 
   const handleProceed = async () => {
     try {
-      const booking = await createBooking({ showId: id, seats: selectedLabels }).unwrap();
+      const booking = await createBooking({
+        showId: id,
+        seats: selectedLabels,
+        couponCode: coupon.code,
+      }).unwrap();
       navigate(checkoutPath(booking.id));
     } catch (error) {
       toast.error(getErrorMessage(error), { duration: 6000 });
@@ -123,8 +134,13 @@ export default function SeatSelectionPage() {
             <>
               <p className={styles.seatList}>{selectedLabels.join(', ')}</p>
               <p className={styles.total}>
-                {formatCurrency(total)} <small>before convenience fee</small>
+                {formatCurrency(payable)} <small>before convenience fee</small>
               </p>
+              {coupon.discount > 0 && (
+                <p className={styles.muted}>
+                  Includes coupon savings of {formatCurrency(coupon.discount)}.
+                </p>
+              )}
             </>
           )}
 
@@ -140,6 +156,8 @@ export default function SeatSelectionPage() {
           {!user.isVerified && (
             <p className={styles.warning}>Verify your email to book. Use the banner at the top.</p>
           )}
+
+          <CouponBox coupon={coupon} disabled={isBooking} />
 
           <Button
             onClick={handleProceed}

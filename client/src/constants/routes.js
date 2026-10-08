@@ -11,6 +11,7 @@ export const ROUTES = Object.freeze({
   VERIFY_EMAIL: '/verify-email',
   ADMIN: '/admin',
   MANAGE: '/manage',
+  NOTIFICATIONS: '/notifications',
 });
 
 export const movieDetailsPath = (slug) => `${ROUTES.MOVIES}/${slug}`;

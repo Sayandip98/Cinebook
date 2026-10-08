@@ -63,6 +63,7 @@ const bookingSchema = new mongoose.Schema(
     cancellationReason: { type: String, trim: true, maxlength: 300 },
     refundAmount: { ...money('Refund amount'), default: 0 },
     checkedInAt: Date,
+    reminderSentAt: Date,
   },
   buildSchemaOptions(),
 );

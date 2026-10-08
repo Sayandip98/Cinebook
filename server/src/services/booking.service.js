@@ -13,6 +13,7 @@ import * as showRepository from '../repositories/show.repository.js';
 import * as seatService from './seat.service.js';
 import * as paymentService from './payment.service.js';
 import * as ticketService from './ticket.service.js';
+import * as couponService from './coupon.service.js';
 
 const notFound = () => new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking not found');
 
@@ -24,7 +25,7 @@ const requireAccessibleBooking = async (actor, id) => {
   return booking;
 };
 
-export const createBooking = async (user, { showId, seats: labels }) => {
+export const createBooking = async (user, { showId, seats: labels, couponCode }) => {
   const show = await showRepository.findById(showId);
   if (!show) throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Show not found');
   if (show.status !== SHOW_STATUS.SCHEDULED || show.startTime <= new Date()) {
@@ -48,27 +49,33 @@ export const createBooking = async (user, { showId, seats: labels }) => {
     bookingId,
   });
 
-  try {
-    // Prices come from the locked ShowSeat documents, never from the client.
-    // TODO (Phase 11): validate the coupon here and pass its discount below.
-    const totals = calculateBookingTotals(seats, {
-      convenienceFeePerSeat: env.CONVENIENCE_FEE_PER_SEAT,
-      discount: 0,
-    });
+    try {
+      // Prices come from the locked ShowSeat documents, never from the client.
+      const subtotal = seats.reduce((sum, seat) => sum + seat.price, 0);
+      const applied = couponCode
+        ? await couponService.evaluateCoupon(couponCode, user._id, subtotal)
+        : null;
 
-    await bookingRepository.create({
-      _id: bookingId,
-      user: user._id,
-      show: show._id,
-      seats: seats.map(({ seatLabel, category, price }) => ({ seatLabel, category, price })),
-      ...totals,
-      status: BOOKING_STATUS.PENDING,
-      expiresAt: lockExpiresAt,
-    });
-  } catch (error) {
-    await seatService.releaseBookingSeats(bookingId);
-    throw error;
-  }
+      const totals = calculateBookingTotals(seats, {
+        convenienceFeePerSeat: env.CONVENIENCE_FEE_PER_SEAT,
+        discount: applied?.discount ?? 0,
+      });
+
+      await bookingRepository.create({
+        _id: bookingId,
+        user: user._id,
+        show: show._id,
+        seats: seats.map(({ seatLabel, category, price }) => ({ seatLabel, category, price })),
+        ...totals,
+        coupon: applied?.coupon._id,
+        status: BOOKING_STATUS.PENDING,
+        expiresAt: lockExpiresAt,
+      });
+    } catch (error) {
+      // A bad coupon lands here too, so the seats are released again.
+      await seatService.releaseBookingSeats(bookingId);
+      throw error;
+    }
 
   logger.info('Booking created', {
     bookingId: String(bookingId),

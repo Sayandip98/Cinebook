@@ -1,0 +1,35 @@
+.bell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  transition:
+    border-color var(--transition),
+    color var(--transition);
+}
+
+.bell:hover {
+  border-color: var(--color-primary-text);
+  color: var(--color-primary-text);
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 4px;
+  background: var(--color-danger);
+  border-radius: var(--radius-full);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.1rem;
+  text-align: center;
+}

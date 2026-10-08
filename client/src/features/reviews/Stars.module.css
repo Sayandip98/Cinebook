@@ -1,0 +1,29 @@
+.row {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.on {
+  color: var(--color-accent);
+}
+
+.off {
+  color: var(--color-text-muted);
+}
+
+.button {
+  display: grid;
+  padding: 2px;
+  background: none;
+  border: 0;
+  color: var(--color-text-muted);
+  transition: transform var(--transition);
+}
+
+.button:hover:not(:disabled) {
+  transform: scale(1.12);
+}
+
+.button.on {
+  color: var(--color-accent);
+}

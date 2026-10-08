@@ -34,9 +34,13 @@ const getDisplayStatus = (show) => {
 
 export default function StaffShowsPage() {
   const { params, setParam, page } = useQueryState();
-  const when = WHEN_OPTIONS.some((option) => option.value === params.get('when'))
-    ? params.get('when')
-    : 'upcoming';
+  const whenParam = params.get('when');
+  const when =
+    whenParam === 'all'
+      ? ''
+      : WHEN_OPTIONS.some((o) => o.value === whenParam)
+        ? whenParam
+        : 'upcoming';
   const status = STATUS_OPTIONS.some((option) => option.value === params.get('status'))
     ? params.get('status')
     : '';

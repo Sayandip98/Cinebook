@@ -13,6 +13,10 @@ export const createBookingSchema = {
   body: Joi.object({
     showId: objectId,
     seats: Joi.array().items(seatLabel).min(1).max(MAX_SEATS_PER_BOOKING).unique().required(),
+    couponCode: Joi.string()
+      .trim()
+      .uppercase()
+      .pattern(/^[A-Z0-9_-]{3,20}$/),
   }),
 };
 

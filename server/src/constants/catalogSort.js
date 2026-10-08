@@ -22,3 +22,11 @@ export const SHOW_SORT_OPTIONS = Object.freeze({
 export const MOVIE_SORT_KEYS = Object.freeze(Object.keys(MOVIE_SORT_OPTIONS));
 export const THEATER_SORT_KEYS = Object.freeze(Object.keys(THEATER_SORT_OPTIONS));
 export const SHOW_SORT_KEYS = Object.freeze(Object.keys(SHOW_SORT_OPTIONS));
+
+export const REVIEW_SORT_OPTIONS = Object.freeze({
+  newest: { createdAt: -1, _id: 1 },
+  highest: { rating: -1, createdAt: -1, _id: 1 },
+  lowest: { rating: 1, createdAt: -1, _id: 1 },
+});
+
+export const REVIEW_SORT_KEYS = Object.freeze(Object.keys(REVIEW_SORT_OPTIONS));

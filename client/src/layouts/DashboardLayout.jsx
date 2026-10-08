@@ -8,6 +8,7 @@ import {
   ScanLine,
   Ticket,
   Users,
+  TicketPercent,
 } from 'lucide-react';
 import Navbar from '@/components/layout-parts/Navbar';
 import { useAuth } from '@/hooks/useAuth';
@@ -21,6 +22,7 @@ const STAFF_LINKS = [
   { to: '/manage/shows', label: 'Shows', icon: CalendarClock },
   { to: '/manage/theaters', label: 'Theaters', icon: Building2 },
   { to: '/manage/check-in', label: 'Check-in', icon: ScanLine },
+  { to: '/admin/coupons', label: 'Coupons', icon: TicketPercent },
 ];
 
 const ADMIN_LINKS = [

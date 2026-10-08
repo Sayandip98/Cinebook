@@ -28,3 +28,9 @@ export const bookingLimiter = createLimiter({
   limit: 20,
   message: 'Too many booking attempts. Please try again shortly.',
 });
+
+export const couponLimiter = createLimiter({
+  windowMs: 10 * 60 * 1000,
+  limit: 60,
+  message: 'Too many coupon checks. Please try again shortly.',
+});

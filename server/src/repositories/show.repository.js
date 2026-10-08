@@ -50,3 +50,11 @@ export const countUpcoming = (theaterIds) => {
   if (theaterIds) filter.theater = { $in: theaterIds };
   return Show.countDocuments(filter);
 };
+
+export const findIdsStartingBetween = (from, to) =>
+  Show.find({ status: SHOW_STATUS.SCHEDULED, startTime: { $gt: from, $lte: to } }).distinct('_id');
+
+export const findIdsStartedForMovie = (movieId, now) =>
+  Show.find({ movie: movieId, status: SHOW_STATUS.SCHEDULED, startTime: { $lte: now } }).distinct(
+    '_id',
+  );

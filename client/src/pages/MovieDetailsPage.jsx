@@ -11,6 +11,7 @@ import { ROUTES } from '@/constants/routes';
 import { cx } from '@/utils/classNames';
 import { isMissing } from '@/utils/getErrorMessage';
 import { formatDuration, formatReleaseDate } from '@/utils/format';
+import ReviewsSection from '@/features/reviews/ReviewsSection';
 import styles from './MovieDetailsPage.module.css';
 
 export default function MovieDetailsPage() {
@@ -109,6 +110,7 @@ export default function MovieDetailsPage() {
           <ShowsBrowser filters={{ movieId: movie.id }} groupBy="theater" applyCity />
         )}
       </section>
+      {movie.status !== 'UPCOMING' && <ReviewsSection movie={movie} />}
     </>
   );
 }

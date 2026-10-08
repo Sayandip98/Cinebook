@@ -12,6 +12,7 @@ import ThemeToggle from '@/components/common/ThemeToggle';
 import CitySelect from './CitySelect';
 import styles from './Navbar.module.css';
 import { STAFF_ROLES } from '@/constants/roles';
+import NotificationBell from './NotificationBell';
 
 const linkClass = ({ isActive }) => cx(styles.link, isActive && styles.active);
 
@@ -25,7 +26,7 @@ export default function Navbar() {
   const userMenuRef = useRef(null);
 
   const isStaff = STAFF_ROLES.includes(user?.role);
-    const dashboardPath = ROUTES.MANAGE;
+  const dashboardPath = ROUTES.MANAGE;
 
   useEffect(() => {
     if (!userMenuOpen) return undefined;
@@ -95,7 +96,7 @@ export default function Navbar() {
 
         <div className={styles.actions}>
           <ThemeToggle />
-
+          {isAuthenticated && <NotificationBell />}
           {isAuthenticated ? (
             <div className={styles.userMenu} ref={userMenuRef}>
               <button

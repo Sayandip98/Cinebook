@@ -1,1 +1,1 @@
-export const cx = (...values) => values.filter(Boolean).join('');
+export const cx = (...values) => values.filter(Boolean).join(' ');

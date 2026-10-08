@@ -65,3 +65,8 @@ const fullDateFormatter = new Intl.DateTimeFormat('en-IN', {
 });
 
 export const formatDate = (isoDate) => fullDateFormatter.format(new Date(isoDate));
+
+export const formatCouponValue = (coupon) =>
+  coupon.type === 'PERCENT'
+    ? `${coupon.value}% off${coupon.maxDiscount ? ` (up to ${formatCurrency(coupon.maxDiscount)})` : ''}`
+    : `${formatCurrency(coupon.value)} off`;

@@ -1,0 +1,75 @@
+.box {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.04em;
+}
+
+.form input:focus {
+  outline: none;
+  border-color: var(--color-primary-text);
+}
+
+.form input:disabled {
+  opacity: 0.7;
+}
+
+.ok {
+  color: var(--color-success);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.bad {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+}
+
+.muted {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: grid;
+  gap: 1px;
+  padding: 0.35rem 0.65rem;
+  background: var(--color-accent-soft);
+  border: 1px dashed var(--color-accent);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.chip small {
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  font-weight: 400;
+}

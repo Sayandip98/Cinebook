@@ -12,3 +12,6 @@ export const findPaginated = (filter, { sort, skip, limit }) =>
 export const count = (filter) => Movie.countDocuments(filter);
 
 export const deleteById = (id) => Movie.findByIdAndDelete(id);
+
+export const updateRating = (id, { ratingAverage, ratingCount }) =>
+  Movie.updateOne({ _id: id }, { $set: { ratingAverage, ratingCount } });
